@@ -1,0 +1,5 @@
+# AbstractApplicationContext
+[toc]
+
+## 简介
+AbstractApplicationContext是ConfigurableApplicationContext的实现类，是一个模板类，其中定制了refresh()方法刷新容器，提供了3个beanFactory方法，供实现AbstractApplicationContext的子类实现
