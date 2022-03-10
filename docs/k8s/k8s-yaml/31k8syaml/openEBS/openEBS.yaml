@@ -1,0 +1,33 @@
+apiVersion: openebs.io/v1alpha1
+kind: JivaVolumePolicy
+metadata:
+  name: hhh-jiva-policy
+  namespace: openebs
+spec:
+  replicaSC: openebs-hostpath
+  target:
+    replicationFactor: 1
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hhh-jiva-sc
+provisioner: jiva.csi.openebs.io
+allowVolumeExpansion: true
+parameters:
+  cas-type: "jiva"
+  policy: "hhh-jiva-policy"
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hhh-jiva-pvc
+spec:
+  storageClassName: hhh-jiva-sc
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi

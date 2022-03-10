@@ -1,0 +1,212 @@
+# Prometheus configuration format https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: kube-system 
+  labels:
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: EnsureExists
+data:
+  # 存放prometheus配置文件
+  prometheus.yml: |
+    # 配置采集目标
+    scrape_configs:
+    - job_name: prometheus
+      static_configs:
+      - targets:
+        # 采集自身
+        - localhost:9090
+
+  prometheus.yml: |
+    # 配置采集目标
+    scrape_configs:
+    - job_name: kubernetes-nodes
+      static_configs:
+      - targets:
+        # 采集自身
+        - 192.168.1.110:9100
+        - 192.168.1.111:9100
+    
+    # 采集：Apiserver 生存指标
+    # 创建的job name 名称为 kubernetes-apiservers
+    - job_name: kubernetes-apiservers
+      # 基于k8s的服务发现
+      kubernetes_sd_configs:
+      - role: endpoints
+      # 使用通信标记标签
+      relabel_configs:
+      # 保留正则匹配标签
+      - action: keep
+        # 已经包含
+        regex: default;kubernetes;https
+        source_labels:
+        - __meta_kubernetes_namespace
+        - __meta_kubernetes_service_name
+        - __meta_kubernetes_endpoint_port_name
+      # 使用方法为https、默认http
+      scheme: https
+      tls_config:
+        # promethus访问Apiserver使用认证
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        # 跳过https认证
+        insecure_skip_verify: true
+      # promethus访问Apiserver使用认证
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+ 
+    # 采集：Kubelet 生存指标
+    - job_name: kubernetes-nodes-kubelet
+      kubernetes_sd_configs:
+      # 发现集群中所有的Node
+      - role: node
+      relabel_configs:
+      # 通过regex获取关键信息
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+    # 采集：nodes-cadvisor 信息
+    - job_name: kubernetes-nodes-cadvisor
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      # 重命名标签
+      - target_label: __metrics_path__
+        replacement: /metrics/cadvisor
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+    # 采集：service-endpoints 信息
+    - job_name: kubernetes-service-endpoints
+      # 选定指标
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: true
+        # 指定源标签
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+        # 重命名标签采集
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: kubernetes_namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_service_name
+        target_label: kubernetes_name
+
+    # 采集：kubernetes-services 服务指标
+    - job_name: kubernetes-services
+      kubernetes_sd_configs:
+      - role: service
+      # 黑盒探测，探测IP与端口是否可用
+      metrics_path: /probe
+      params:
+        module:
+        - http_2xx
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_probe
+      - source_labels:
+        - __address__
+        target_label: __param_target
+      # 使用 blackbox进行黑盒探测
+      - replacement: blackbox
+        target_label: __address__
+      - source_labels:
+        - __param_target
+        target_label: instance
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: kubernetes_namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: kubernetes_name
+
+    # 采集： kubernetes-pods 信息
+    - job_name: kubernetes-pods
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        # 只保留采集的信息
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        # 采集地址
+        - __address__
+        # 采集端口 
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: kubernetes_namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: kubernetes_pod_name
+    alerting:
+      # 告警配置文件
+      alertmanagers:
+      - kubernetes_sd_configs:
+          # 采用动态获取
+          - role: pod
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_namespace]
+          regex: kube-system 
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_label_k8s_app]
+          regex: alertmanager
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_container_port_number]
+          regex:
+          action: drop

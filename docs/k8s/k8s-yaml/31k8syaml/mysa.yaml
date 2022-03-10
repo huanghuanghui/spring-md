@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: null
+  namespace: huanghuanghui
+  name: mysa
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-sa-demo
+  namespace: huanghuanghui
+  labels:
+    app: my-sa-app
+    tier: frontend
+spec:
+  containers:
+  - name: my-sa-app
+    image: huanghuanghui/myapp:v1
+    imagePullPolicy: Never
+    ports:
+    - name: http
+      containerPort: 80
+  # 可以使用的Service Account    
+  serviceAccountName: admin

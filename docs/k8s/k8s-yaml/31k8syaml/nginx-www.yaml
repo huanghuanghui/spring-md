@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-www
+  namespace: huanghuanghui
+data:
+  server_name: "myapp.magedu.com"
+  listen: "80"
+  root: "/data/web/html"

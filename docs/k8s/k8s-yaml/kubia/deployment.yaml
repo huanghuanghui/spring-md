@@ -1,0 +1,66 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kubia-api-six
+  namespace: huanghuanghui
+spec:
+  minReadySeconds: 3
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0 
+  selector:
+    matchLabels:
+      app: kubia-api-six
+  template:
+    metadata:
+      labels:
+        app: kubia-api-six
+    spec:
+      containers:
+      - name: kubia
+        image: huanghuanghui/kubia
+        readinessProbe:
+          periodSeconds: 10
+          httpGet: 
+            path: /
+            port: 8080
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-api-six
+  namespace: huanghuanghui
+spec:
+  type: LoadBalancer
+  selector:
+    app: kubia-api-six
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: kubia-api-six
+  namespace: huanghuanghui
+  labels:
+    name: kubia-api-six
+spec:
+  rules:
+  - host: kubiaapisix.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubia-api-six
+          servicePort: 80

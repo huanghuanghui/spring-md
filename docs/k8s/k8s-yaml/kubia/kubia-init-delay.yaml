@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubia-manual-init-delay
+spec:
+  containers:
+    - image: huanghuanghui/kubia
+      name: kubia
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 8080
+        initialDelaySeconds: 15
+      ports:
+        - containerPort: 8080
+          protocol: TCP

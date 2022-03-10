@@ -1,0 +1,35 @@
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: kubia-v4-test
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - "kubia-v4-test"
+  template:
+    metadata:
+      name: kubia-v4-test
+      labels:
+        app: kubia-v4-test
+    spec:
+      containers:
+        - name: kubia-v4-test
+          image: huanghuanghui/kubia-v3
+          ports:
+            - containerPort: 8080
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-v4-test
+spec:
+  type: LoadBalancer
+  selector:
+    app: kubia-v4-test
+  ports:
+  - port: 80
+    targetPort: 8080

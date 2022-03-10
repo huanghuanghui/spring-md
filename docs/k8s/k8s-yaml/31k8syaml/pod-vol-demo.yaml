@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-demo
+  namespace: huanghuanghui
+  labels:
+    app: myapp
+    tier: frontend
+spec:
+  containers:
+  - name: myapp
+    image: huanghuanghui/myapp:v1
+    imagePullPolicy: Never
+    ports:
+    - name: http
+      containerPort: 80
+    volumeMounts:    #在容器内定义挂载存储名称和挂载路径
+    - name: html
+      mountPath: /usr/share/nginx/html/
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: html
+      mountPath: /data/    #在容器内定义挂载存储名称和挂载路径
+    command: ['/bin/sh','-c','while true;do echo $(date) >> /data/index.html;sleep 2;done']
+  volumes:  #定义存储卷
+  - name: html    #定义存储卷名称  
+    emptyDir: {}  #定义存储卷类型
