@@ -1,0 +1,11 @@
+---
+- name: play1
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: task1 in play1
+      debug:
+        msg: "task1 in play1"
+
+  # - include_tasks: pb2.yml
+    - import_tasks: pb2.yaml

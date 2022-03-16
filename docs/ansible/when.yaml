@@ -1,0 +1,15 @@
+---
+- name: when task
+  hosts: new
+  gather_facts: false
+  vars:
+    myname: huanghuanghui
+  tasks:
+    - name: don't excute
+      debug:
+        msg: "myname is {{myname}}"
+      when: myname=="huang"
+    - name: excute
+      debug:
+        msg: "myname is {{myname}}"
+      when: myname=="huanghuanghui"

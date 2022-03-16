@@ -1,0 +1,12 @@
+---
+- name: play1
+  hosts: new
+  gather_facts: false
+  tasks: 
+    - name: create directories
+      file: 
+        path: "{{item}}"
+        state: directory
+      loop:
+        - /tmp/test1
+        - /tmp/test2

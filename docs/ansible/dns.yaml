@@ -1,0 +1,13 @@
+---
+- name: add DNS for each
+  hosts: new
+  gather_facts: true
+  tasks: 
+    - name: scp file to service
+
+    - name: add DNS
+      lineinfile: 
+        path: "/Users/hhh/workspace/gitbook/docs/ansible/myhost"
+        line: "{{item}} {{hostvars[item].ansible_hostname}}"
+      when: item != inventory_hostname
+      loop: "{{ play_hosts }}"

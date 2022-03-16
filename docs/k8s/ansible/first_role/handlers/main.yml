@@ -1,0 +1,4 @@
+---
+- name: go to handler
+  debug:
+    msg: "new_var: {{new_var}}"

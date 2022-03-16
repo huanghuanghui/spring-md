@@ -1,0 +1,19 @@
+---
+- name: this is a lineinfile
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+  # insertbefore和insertafter指定的正则表达式如果匹配了多行，则默认选中最后一个匹配行，然后在被选中的行前、行后插入。
+  # 如果明确要指定选中第一次匹配的行，则指定参数firstmatch=yes
+  # 在某一行前插入
+    - lineinfile:
+        path: /Users/hhh/workspace/gitbook/docs/ansible/a.txt
+        line: "LINE1"
+        # 对于insertbefore，如果它的正则表达式匹配失败，则会插入到文件的尾部
+        insertbefore: '^para.* 2'
+          # 在某一行后插入
+    - lineinfile:
+        path: /Users/hhh/workspace/gitbook/docs/ansible/a.txt
+        line: "LINE2"
+        insertafter: '^para.* 2'

@@ -1,0 +1,17 @@
+---
+- name: play1
+  hosts: localhost
+  gather_facts: false
+  handlers: 
+    - name: h1
+    #使用include_tasks时，notify指令触发的handler名称是include_tasks任务本身的名称
+    #使用import_tasks时，notify指令触发的handler名称是import_tasks所引入文件内的任务名称
+      include_tasks: handler1.yaml
+
+  tasks: 
+    - name: task1 in play1
+      debug: 
+        msg: "task1 in play1"
+      changed_when: true
+      notify: 
+        - h1

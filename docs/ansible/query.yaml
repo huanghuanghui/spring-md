@@ -1,0 +1,8 @@
+#query()在写法和功能上和lookup一致，其实它会自动调用lookup插件，
+#并且总是以列表方式返回，而不需要手动加上wantlist=True参数
+---
+- name: task1
+  hosts: new
+  gather_facts: false
+  debug:
+    msg: "{{q('fileglob','/etc/*.conf')}}"

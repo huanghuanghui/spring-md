@@ -1,0 +1,5 @@
+---
+- name: task in main.yml
+  debug:
+    msg: "task in main.yml sencond task"
+

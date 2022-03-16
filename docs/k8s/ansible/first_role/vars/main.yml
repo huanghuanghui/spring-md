@@ -1,0 +1,5 @@
+---
+# vars file for first_role
+my_var: my_value
+default_var: overrided_default_value
+new_var: new_value

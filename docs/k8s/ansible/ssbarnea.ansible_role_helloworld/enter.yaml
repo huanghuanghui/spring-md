@@ -1,0 +1,7 @@
+--- 
+- name: role from galaxy
+  hosts: localhost
+  gather_facts: false
+  roles: 
+    - role: ssbarnea.ansible_role_helloworld
+

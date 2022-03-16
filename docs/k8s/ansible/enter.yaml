@@ -1,0 +1,22 @@
+---
+- name: play1
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - first_role
+#    - second_role
+
+
+# include_xxx指令是在遇到它的时候才加载文件并解析执行，所以它是动态解析的；
+# import_xxx是在解析playbook的时候解析的，也就是说在执行playbook之前就已经解析好了，所以它也称为静态加载
+
+#将import_tasks替换成include_tasks也能正确工作，不会有任何影响。
+#
+#但如果是在循环中(比如loop)，则只能使用include_tasks而不能再使用import_tasks。
+
+
+# 使用include_tasks时，notify指令触发的handler名称是include_tasks任务本身的名称
+# 使用import_tasks时，notify指令触发的handler名称是import_tasks所引入文件内的任务名称
+
+#include_tasks是在遇到这个指令的时候才引入文件的，所以notify不可能去触发外部handler文件里的名称(h11)，外部handler文件中的名称在其引入之前根本就不存在
+#import_tasks是在解析playbook的时候引入的，换句话说，在执行play之前就已经把外部handler文件的内容引入并替换在handler的位置处，而原来的名称(h2)则被覆盖了

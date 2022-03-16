@@ -1,0 +1,6 @@
+---
+- name: task in t.yml
+  debug:
+    msg: "task in t.yml"
+
+

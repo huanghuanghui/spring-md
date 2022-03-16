@@ -1,0 +1,15 @@
+---
+- name: play1
+  hosts: localhost
+  gather_facts: false
+  handlers: 
+    - name: h2
+      import_tasks: handler2.yaml
+
+  tasks: 
+    - name: task1 in play1
+      debug: 
+        msg: "task1 in play1"
+      changed_when: true
+      notify: 
+        - h22

@@ -1,0 +1,25 @@
+---
+- name: task1
+  debug:
+    msg: "task in my_var: {{my_var}}"
+
+- name: include t.yml
+  import_tasks: t.yml
+
+
+- name: yum install ntp
+  yum:
+    name: ntp
+    state: present
+  tags:
+    - initialize
+    - pkginstall
+    - ntp
+
+- name: started ntpd
+  service:
+    name: ntpd
+    state: started
+  tags:
+    - ntp
+    - initialize

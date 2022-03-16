@@ -1,0 +1,8 @@
+---
+- name: play1
+  hosts: new
+  gather_facts: false
+  tasks: 
+    - name: task1
+      debug:
+        msg: "command res: {{lookup('pipe','cat /etc/hosts')}}"

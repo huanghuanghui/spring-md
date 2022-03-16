@@ -1,0 +1,8 @@
+---
+- name: this is a lineinfile
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - lineinfile:
+        path: /Users/hhh/workspace/gitbook/docs/ansible/a.txt
+        line: this is a line number

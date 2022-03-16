@@ -1,0 +1,25 @@
+---
+- name: play 1
+  hosts: nginx
+  gather_facts: false
+  tasks: 
+    - name: task1 in play1
+      debug: 
+        msg: "output task1 in play1"
+
+    - name: task2 in play1
+      debug: 
+        msg: "output task2 in play1"
+
+- name: play 2
+  hosts: apache
+  gather_facts: false
+  tasks: 
+    - name: task1 in play2
+      debug: 
+        msg: "output task1 in play2"
+
+    - name: task2 in play2
+      debug: 
+        msg: "output task2 in play2"
+

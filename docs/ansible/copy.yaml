@@ -1,0 +1,8 @@
+- name: my copy play
+  hosts: nginx
+  gather_facts: false
+  tasks: 
+    - copy: 
+        src=/etc/passwd 
+        dest=/tmp
+      name: my copy play,copy /etc/passwd to /tmp 

@@ -1,0 +1,9 @@
+paragraph 1
+first line in paragraph 1
+second line in paragraph 1
+LINE1
+#this is ansible lineinfile add
+paragraph 2
+LINE2
+first line in paragraph 2
+second line in paragraph 2
