@@ -1,5 +1,5 @@
-No	Name	Address	Age
-1	h1	home1	11
-2	h2	home2	12
-3	h3	home3	13
-4	h4	home4	14
+No;Name;Address;Age
+1;h1;home1;11
+2;h2;home2;12
+3;h3;home3;13
+4;h4;home4;14
