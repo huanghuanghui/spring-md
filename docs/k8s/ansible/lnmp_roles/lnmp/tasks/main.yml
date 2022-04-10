@@ -1,0 +1,5 @@
+---
+- name: add_yum repo for nginx, php, mysql
+  import_tasks: add_repo.yml
+
+

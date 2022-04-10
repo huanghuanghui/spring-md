@@ -1,0 +1,16 @@
+Shellç¬M-^Tè®°.md$
+a1$
+a2$
+a3$
+debug_demo.sh$
+echo_printf.sh$
+err.txt$
+example$
+exec$
+log.txt$
+outls.txt$
+outlv.txt$
+output.txt$
+stdin.sh$
+tee_test$
+this$

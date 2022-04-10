@@ -1,0 +1,13 @@
+[nginx]
+10.210.13.4 ansible_user=root
+
+[php]
+10.210.13.33 ansible_user=root
+
+[mysql]
+10.210.13.36 ansible_user=root
+
+[dev:children]
+nginx
+php
+mysql

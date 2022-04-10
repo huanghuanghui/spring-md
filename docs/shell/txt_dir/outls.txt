@@ -1,0 +1,15 @@
+     1	Shell笔记.md
+     2	a1
+     3	a2
+     4	a3
+     5	debug_demo.sh
+     6	echo_printf.sh
+     7	err.txt
+     8	example
+     9	exec
+    10	log.txt
+    11	outls.txt
+    12	output.txt
+    13	stdin.sh
+    14	tee_test
+    15	this

@@ -1,0 +1,7 @@
+---
+- name: add yum_repo for nginx, php, mysql
+  copy: 
+    src: lnmp.repo
+    dest: /etc/yum.repos.d/lnmp.repo
+
+
