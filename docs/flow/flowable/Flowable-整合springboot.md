@@ -1,10 +1,4 @@
-# Flowable实战篇
-
-> lecture：波波老师
-
-
-
-# 一、Flowable整合SpringBoot
+# Flowable整合SpringBoot
 
 ## 1.添加相关依赖
 
@@ -73,7 +67,7 @@ server:
 - *cases*目录下的任何CMMN 1.1事例都会被自动部署。
 - *forms*目录下的任何Form定义都会被自动部署。
 
-![image-20220328110737387](D:\desktop\桌面文件\工作目录\01-录课资料\20-flowable\01-课件\img\image-20220328110737387.png)
+![image-20220328110737387](img\image-20220328110737387.png)
 
 
 
