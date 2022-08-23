@@ -210,3 +210,10 @@ deployer.deploy(deployment, deploymentSettings);
 
 
 
+```mermaid
+graph TD
+t_draft-->t_draft_attachment
+t_draft-->t_draft_mark
+t_draft-->t_draft_signatory
+t_draft-->t_draft_file_operator
+```
