@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/k8s/k8s-yaml/31k8syaml/kube-prometheus" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/k8s/k8s-yaml/k8s-docker-desktop-for-mac" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/k8s/k8s-yaml/kubesprey/kubespray" vcs="Git" />
+  </component>
+</project>

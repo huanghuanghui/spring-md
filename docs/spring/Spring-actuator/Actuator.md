@@ -80,7 +80,7 @@ management.endpoints.enabled-by-default=true
 
 ![image-20220823154551551](/Users/hhh/Library/Application Support/typora-user-images/image-20220823154551551.png)
 
-在对应类打端点，就可以进行对应的源码查看
+在对应类`AbstractWebMvcEndpointHandlerMapping`打端点，就可以进行对应的源码查看
 
 ![image-20220823154628246](/Users/hhh/Library/Application Support/typora-user-images/image-20220823154628246.png)
 
@@ -101,7 +101,28 @@ management.endpoints.enabled-by-default=true
 
 访问即可获取可被prometheus采集的数据
 
+## 自定义Actuator
+
+```yaml
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: ["myendpoint"]
+```
 
 
 
+```java
+@Endpoint(id="myendpoint")
+@Component
+public class MyCustomEndpoints {
+	@ReadOperation
+	@Bean
+	public String hi() {
+		return "Hi from custom endpoint";
+	}
+}
+```
 
